@@ -3,9 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { NAV_LINKS, CLUB } from "@/data/siteData";
 
-// ─────────────────────────────────────────────────────────────
-//  Logo
-// ─────────────────────────────────────────────────────────────
 function Logo() {
   return (
     <Link
@@ -13,7 +10,6 @@ function Logo() {
       className="flex items-center gap-3 group"
       aria-label="Khukuri FC — Home"
     >
-      {/* Kukri badge mark */}
       <div
         className="w-9 h-9 rounded-full flex items-center justify-center relative overflow-hidden"
         style={{
@@ -27,8 +23,6 @@ function Logo() {
           className="w-12 h-12 object-contain"
         />
       </div>
-
-      {/* Wordmark */}
       <div>
         <div
           className="t-display leading-none text-xl group-hover:text-brick transition-colors duration-300"
@@ -47,9 +41,6 @@ function Logo() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-//  Desktop NavLink
-// ─────────────────────────────────────────────────────────────
 function DesktopLink({ to, label, active }) {
   return (
     <Link
@@ -59,12 +50,11 @@ function DesktopLink({ to, label, active }) {
       style={{ color: active ? "var(--brick)" : "var(--stone)" }}
     >
       <span
-        className="t-sans text-sm font-medium tracking-wide transition-colors duration-200 group-hover:text-ink"
+        className="t-sans text-sm font-medium transition-colors duration-200 group-hover:text-ink"
         style={{ letterSpacing: "0.03em" }}
       >
         {label}
       </span>
-      {/* Animated dot under active/hover */}
       <span
         className="absolute -bottom-1 left-0 right-0 flex justify-center"
         aria-hidden="true"
@@ -82,25 +72,18 @@ function DesktopLink({ to, label, active }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-//  Navbar
-// ─────────────────────────────────────────────────────────────
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef(null);
-  const drawerRef = useRef(null);
-  const drawerLinks = useRef([]);
   const location = useLocation();
 
-  // ── Scroll detect ─────────────────────────────────────────
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // ── Entrance ──────────────────────────────────────────────
   useEffect(() => {
     gsap.fromTo(
       navRef.current,
@@ -109,35 +92,11 @@ export default function Navbar() {
     );
   }, []);
 
-  // ── Mobile drawer animation ───────────────────────────────
   useEffect(() => {
-    const drawer = drawerRef.current;
-    const links = drawerLinks.current.filter(Boolean);
-    if (!drawer) return;
-
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-      gsap.fromTo(
-        drawer,
-        { xPercent: 100 },
-        { xPercent: 0, duration: 0.55, ease: "power4.out" },
-      );
-      gsap.fromTo(
-        links,
-        { opacity: 0, x: 40 },
-        {
-          opacity: 1,
-          x: 0,
-          stagger: 0.06,
-          duration: 0.5,
-          ease: "power3.out",
-          delay: 0.2,
-        },
-      );
-    } else {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
       document.body.style.overflow = "";
-      gsap.to(drawer, { xPercent: 100, duration: 0.4, ease: "power3.in" });
-    }
+    };
   }, [menuOpen]);
 
   useEffect(() => {
@@ -146,7 +105,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Main nav bar ────────────────────────────────────── */}
+      {/* ── Nav bar ───────────────────────────────────────── */}
       <nav
         ref={navRef}
         role="navigation"
@@ -157,8 +116,8 @@ export default function Navbar() {
           left: 0,
           right: 0,
           height: "var(--nav-h)",
-          zIndex: 50,
-          opacity: 0, // GSAP will reveal
+          zIndex: 100,
+          opacity: 0,
           backgroundColor: scrolled ? "rgba(250,246,239,0.92)" : "transparent",
           backdropFilter: scrolled ? "blur(16px)" : "none",
           borderBottom: scrolled
@@ -184,117 +143,240 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-3">
-            <Link
-              to="/join"
-              className="btn btn-brick hidden sm:inline-flex"
-              aria-label="Join Khukuri FC"
-            >
+          <div className="flex items-center gap-2">
+            <Link to="/join" className="btn btn-brick hidden sm:inline-flex">
               <span>Join the Club</span>
               <ArrowRight size={13} />
             </Link>
 
-            {/* Hamburger */}
+            {/* Hamburger — only visible below lg */}
             <button
-              className="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none"
               onClick={() => setMenuOpen((o) => !o)}
-              aria-label={menuOpen ? "Close menu" : "Open navigation"}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "5px",
+                width: "44px",
+                height: "44px",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                flexShrink: 0,
+                zIndex: 110,
+                position: "relative",
+              }}
+              className="lg:hidden"
             >
               <span
-                className="block w-5 h-px transition-all duration-300"
                 style={{
-                  background: "var(--ink)",
+                  display: "block",
+                  width: "22px",
+                  height: "2px",
+                  borderRadius: "2px",
+                  backgroundColor: "var(--ink)",
+                  transformOrigin: "center",
+                  transition: "transform 0.3s ease",
                   transform: menuOpen
-                    ? "translateY(5px) rotate(45deg)"
+                    ? "translateY(7px) rotate(45deg)"
                     : "none",
                 }}
               />
               <span
-                className="block w-5 h-px transition-all duration-300"
-                style={{ background: "var(--ink)", opacity: menuOpen ? 0 : 1 }}
+                style={{
+                  display: "block",
+                  width: "22px",
+                  height: "2px",
+                  borderRadius: "2px",
+                  backgroundColor: "var(--ink)",
+                  transition: "opacity 0.2s ease",
+                  opacity: menuOpen ? 0 : 1,
+                }}
               />
               <span
-                className="block w-5 h-px transition-all duration-300"
                 style={{
-                  background: "var(--ink)",
+                  display: "block",
+                  width: "22px",
+                  height: "2px",
+                  borderRadius: "2px",
+                  backgroundColor: "var(--ink)",
+                  transformOrigin: "center",
+                  transition: "transform 0.3s ease",
                   transform: menuOpen
-                    ? "translateY(-5px) rotate(-45deg)"
+                    ? "translateY(-7px) rotate(-45deg)"
                     : "none",
                 }}
               />
             </button>
           </div>
         </div>
-
-        {/* Progress bar */}
         <ScrollProgress />
       </nav>
 
-      {/* ── Mobile side drawer ──────────────────────────────── */}
+      {/* ── Backdrop ──────────────────────────────────────── */}
+      {menuOpen && (
+        <div
+          onClick={() => setMenuOpen(false)}
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(26,18,9,0.4)",
+            backdropFilter: "blur(4px)",
+            zIndex: 88,
+          }}
+        />
+      )}
+
+      {/* ── Drawer ────────────────────────────────────────── */}
+      {/*
+        Rendered always so transition works.
+        Visibility controlled entirely by translateX inline style.
+        No CSS classes involved in open/close logic at all.
+      */}
       <div
-        ref={drawerRef}
         aria-hidden={!menuOpen}
-        className="fixed inset-y-0 right-0 w-full sm:w-96 z-40 lg:hidden flex flex-col"
         style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: "min(85vw, 380px)",
+          zIndex: 89,
+          display: "flex",
+          flexDirection: "column",
           background: "var(--cream)",
           borderLeft: "1px solid var(--border)",
-          transform: "translateX(100%)",
           paddingTop: "var(--nav-h)",
+          transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.4s cubic-bezier(0.4,0,0.2,1)",
+          willChange: "transform",
+          // Hide on lg+ screens
+          visibility: "visible",
         }}
+        className="lg:!hidden"
       >
-        {/* Stripe accent */}
+        {/* Stripe texture */}
         <div
-          className="absolute inset-0 pattern-stripe opacity-50 pointer-events-none"
           aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            opacity: 0.04,
+            backgroundImage:
+              "repeating-linear-gradient(45deg, var(--ink) 0px, var(--ink) 1px, transparent 1px, transparent 8px)",
+          }}
         />
 
-        <div className="relative flex flex-col justify-between h-full p-8">
-          {/* Links */}
-          <ul className="flex flex-col gap-0.5 mt-6">
-            {NAV_LINKS.map(({ label, path }, i) => (
-              <li key={path} ref={(el) => (drawerLinks.current[i] = el)}>
-                <Link
-                  to={path}
-                  className="group flex items-center justify-between py-4 border-b"
-                  style={{ borderColor: "var(--border)", opacity: 0 }}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100%",
+            padding: "1.5rem 2rem",
+            overflowY: "auto",
+          }}
+        >
+          {/* Nav links */}
+          <nav aria-label="Mobile navigation">
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {NAV_LINKS.map(({ label, path }, i) => (
+                <li
+                  key={path}
+                  style={{
+                    borderBottom: "1px solid var(--border)",
+                    // Stagger via transition-delay so each link fades in after drawer slides in
+                    opacity: menuOpen ? 1 : 0,
+                    transform: menuOpen ? "translateX(0)" : "translateX(16px)",
+                    transition: `opacity 0.35s ease ${0.15 + i * 0.06}s, transform 0.35s ease ${0.15 + i * 0.06}s`,
+                  }}
                 >
-                  <span
-                    className="t-serif text-3xl font-bold transition-colors duration-200 group-hover:text-brick"
+                  <Link
+                    to={path}
                     style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "1rem 0",
+                      textDecoration: "none",
                       color:
                         location.pathname === path
                           ? "var(--brick)"
                           : "var(--ink)",
                     }}
                   >
-                    {label}
-                  </span>
-                  <span
-                    className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 group-hover:bg-brick group-hover:text-cream"
-                    style={{ border: "1px solid var(--border)" }}
-                  >
-                    <ArrowRight size={12} />
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-serif, Georgia, serif)",
+                        fontWeight: 700,
+                        fontSize: "clamp(1.5rem, 5vw, 1.9rem)",
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      {label}
+                    </span>
+                    <span
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        border: "1px solid var(--border)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        color: "var(--ink)",
+                      }}
+                    >
+                      <ArrowRight size={11} />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-          {/* Footer of drawer */}
-          <div className="flex flex-col gap-4 pb-4">
-            <Link to="/join" className="btn btn-brick w-full justify-center">
+          {/* Footer */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.75rem",
+              paddingTop: "2rem",
+              paddingBottom: "0.5rem",
+              opacity: menuOpen ? 1 : 0,
+              transition: "opacity 0.35s ease 0.45s",
+            }}
+          >
+            <Link
+              to="/join"
+              className="btn btn-brick"
+              style={{ justifyContent: "center" }}
+            >
               <span>Join the Club</span>
               <ArrowRight size={13} />
             </Link>
-            <div className="flex gap-5">
+            <div
+              style={{ display: "flex", gap: "1.25rem", paddingTop: "0.25rem" }}
+            >
               <a
                 href={CLUB.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="t-mono text-xs text-stone hover:text-ink transition-colors"
-                style={{ letterSpacing: "0.1em" }}
+                style={{
+                  color: "var(--stone)",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.1em",
+                  textDecoration: "none",
+                  fontFamily: "var(--font-mono, monospace)",
+                }}
               >
                 INSTAGRAM
               </a>
@@ -302,8 +384,13 @@ export default function Navbar() {
                 href={CLUB.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="t-mono text-xs text-stone hover:text-ink transition-colors"
-                style={{ letterSpacing: "0.1em" }}
+                style={{
+                  color: "var(--stone)",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.1em",
+                  textDecoration: "none",
+                  fontFamily: "var(--font-mono, monospace)",
+                }}
               >
                 FACEBOOK
               </a>
@@ -311,24 +398,10 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
-      {/* Backdrop */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-30 lg:hidden"
-          style={{
-            background: "rgba(26,18,9,0.35)",
-            backdropFilter: "blur(4px)",
-          }}
-          onClick={() => setMenuOpen(false)}
-          aria-hidden="true"
-        />
-      )}
     </>
   );
 }
 
-// ── Scroll progress bar ──────────────────────────────────────
 function ScrollProgress() {
   const ref = useRef(null);
   useEffect(() => {

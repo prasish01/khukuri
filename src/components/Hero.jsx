@@ -153,20 +153,17 @@ export default function Hero() {
     tl.add(() => {
       statsRef.current?.querySelectorAll("[data-count]").forEach((el) => {
         const end = parseFloat(el.dataset.count);
-        gsap.fromTo(
-          { n: 0 },
-          {
-            n: end,
-            duration: 1.8,
-            ease: "power2.out",
-            onUpdate() {
-              el.textContent =
-                (el.dataset.prefix || "") +
-                Math.round(this.targets()[0].n) +
-                (el.dataset.suffix || "");
-            },
+        const pfx = el.dataset.prefix || "";
+        const sfx = el.dataset.suffix || "";
+        const counter = { n: 0 };
+        gsap.to(counter, {
+          n: end,
+          duration: 1.8,
+          ease: "power2.out",
+          onUpdate() {
+            if (el) el.textContent = pfx + Math.round(counter.n) + sfx;
           },
-        );
+        });
       });
     }, 2.0);
 

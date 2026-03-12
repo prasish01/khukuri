@@ -6,30 +6,36 @@
    CSS CUSTOM PROPERTIES
 ───────────────────────────────────────────────────────────── */
 :root {
-  --cream:        #FAF6EF;
-  --parchment:    #F2EBD9;
-  --warm:         #EDE3D0;
-  --ink:          #1A1209;
-  --ink-light:    #3D2E1A;
-  --brick:        #C0392B;
-  --brick-light:  #E8563A;
-  --saffron:      #F0A500;
-  --saffron-light:#FFD166;
-  --sage:         #6B7F5E;
-  --stone:        #8C7B6B;
-  --stone-light:  #BFB0A0;
-  --border:       #DDD5C5;
+  --cream: #faf6ef;
+  --parchment: #f2ebd9;
+  --warm: #ede3d0;
+  --ink: #1a1209;
+  --ink-light: #3d2e1a;
+  --brick: #c0392b;
+  --brick-light: #e8563a;
+  --saffron: #f0a500;
+  --saffron-light: #ffd166;
+  --sage: #6b7f5e;
+  --stone: #8c7b6b;
+  --stone-light: #bfb0a0;
+  --border: #ddd5c5;
 
   --nav-h: 72px;
-  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-back:  cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* ─────────────────────────────────────────────────────────────
    BASE
 ───────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html {
   scroll-behavior: smooth;
@@ -40,9 +46,14 @@ html {
 body {
   background: var(--cream);
   color: var(--ink);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   overflow-x: hidden;
-  cursor: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
 }
 
 ::selection {
@@ -50,43 +61,61 @@ body {
   color: var(--ink);
 }
 
-::-webkit-scrollbar       { width: 3px; }
-::-webkit-scrollbar-track { background: var(--parchment); }
-::-webkit-scrollbar-thumb { background: var(--brick); border-radius: 2px; }
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: var(--parchment);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brick);
+  border-radius: 2px;
+}
 
 /* ─────────────────────────────────────────────────────────────
-   CURSOR
+   CURSOR — desktop/mouse only
 ───────────────────────────────────────────────────────────── */
-.cursor-dot {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: var(--brick);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
+.cursor-dot,
+.cursor-ring {
+  display: none;
 }
 
-.cursor-ring {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1.5px solid rgba(192, 57, 43, 0.45);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: width 0.35s var(--ease-out-expo),
-              height 0.35s var(--ease-out-expo),
-              border-color 0.25s,
-              background 0.25s;
-}
-.cursor-ring.hovered {
-  width: 52px;
-  height: 52px;
-  background: rgba(240, 165, 0, 0.08);
-  border-color: var(--saffron);
+@media (hover: hover) and (pointer: fine) {
+  .cursor-dot {
+    display: block;
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--brick);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+
+  .cursor-ring {
+    display: block;
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(192, 57, 43, 0.45);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.35s var(--ease-out-expo),
+      height 0.35s var(--ease-out-expo),
+      border-color 0.25s,
+      background 0.25s;
+  }
+
+  .cursor-ring.hovered {
+    width: 52px;
+    height: 52px;
+    background: rgba(240, 165, 0, 0.08);
+    border-color: var(--saffron);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -98,25 +127,39 @@ body {
   margin: 0 auto;
   padding: 0 1.5rem;
 }
-@media (min-width: 768px)  { .site-container { padding: 0 3rem; } }
-@media (min-width: 1280px) { .site-container { padding: 0 5rem; } }
+@media (min-width: 768px) {
+  .site-container {
+    padding: 0 3rem;
+  }
+}
+@media (min-width: 1280px) {
+  .site-container {
+    padding: 0 5rem;
+  }
+}
 
 /* ─────────────────────────────────────────────────────────────
    TYPOGRAPHY HELPERS
 ───────────────────────────────────────────────────────────── */
 .t-display {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   letter-spacing: 0.02em;
 }
-.t-serif   { font-family: 'Playfair Display', Georgia, serif; }
-.t-sans    { font-family: 'Plus Jakarta Sans', sans-serif; }
-.t-mono    { font-family: 'JetBrains Mono', monospace; }
+.t-serif {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.t-sans {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+.t-mono {
+  font-family: "JetBrains Mono", monospace;
+}
 
 /* ─────────────────────────────────────────────────────────────
    GRAIN TEXTURE OVERLAY  (adds warmth / depth to surfaces)
 ───────────────────────────────────────────────────────────── */
 .grain::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -134,7 +177,7 @@ body {
   display: inline-block;
 }
 .underline-hand::after {
-  content: '';
+  content: "";
   position: absolute;
   left: -2px;
   right: -2px;
@@ -152,17 +195,23 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.04em;
   padding: 0.85rem 1.875rem;
   border-radius: 0;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.3s var(--ease-out-expo);
   position: relative;
   overflow: hidden;
   white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn {
+    cursor: none;
+  }
 }
 
 .btn-brick {
@@ -171,15 +220,20 @@ body {
   border: 1.5px solid var(--brick);
 }
 .btn-brick::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: var(--ink);
   transform: translateY(101%);
   transition: transform 0.4s var(--ease-out-expo);
 }
-.btn-brick:hover::after { transform: translateY(0); }
-.btn-brick > * { position: relative; z-index: 1; }
+.btn-brick:hover::after {
+  transform: translateY(0);
+}
+.btn-brick > * {
+  position: relative;
+  z-index: 1;
+}
 
 .btn-outline-ink {
   background: transparent;
@@ -187,16 +241,23 @@ body {
   border: 1.5px solid var(--ink);
 }
 .btn-outline-ink::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: var(--ink);
   transform: translateY(101%);
   transition: transform 0.4s var(--ease-out-expo);
 }
-.btn-outline-ink:hover { color: var(--cream); }
-.btn-outline-ink:hover::after { transform: translateY(0); }
-.btn-outline-ink > * { position: relative; z-index: 1; }
+.btn-outline-ink:hover {
+  color: var(--cream);
+}
+.btn-outline-ink:hover::after {
+  transform: translateY(0);
+}
+.btn-outline-ink > * {
+  position: relative;
+  z-index: 1;
+}
 
 /* ─────────────────────────────────────────────────────────────
    TAG / LABEL PILLS
@@ -205,14 +266,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.65rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.3rem 0.75rem;
   border: 1px solid var(--border);
   color: var(--stone);
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -235,23 +296,40 @@ body {
    MARQUEE
 ───────────────────────────────────────────────────────────── */
 @keyframes marqueeSlide {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 .marquee-inner {
   display: flex;
   animation: marqueeSlide 28s linear infinite;
   will-change: transform;
 }
-.marquee-inner:hover { animation-play-state: paused; }
+.marquee-inner:hover {
+  animation-play-state: paused;
+}
 
 /* ─────────────────────────────────────────────────────────────
    GSAP INITIAL STATES
 ───────────────────────────────────────────────────────────── */
-.will-reveal       { opacity: 0; }
-.will-reveal-up    { opacity: 0; transform: translateY(36px); }
-.will-reveal-left  { opacity: 0; transform: translateX(-40px); }
-.will-reveal-right { opacity: 0; transform: translateX(40px); }
+.will-reveal {
+  opacity: 0;
+}
+.will-reveal-up {
+  opacity: 0;
+  transform: translateY(36px);
+}
+.will-reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+.will-reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
 
 /* ─────────────────────────────────────────────────────────────
    DECORATIVE PATTERNS
@@ -260,8 +338,8 @@ body {
 /* Diamond grid pattern — very subtle, on warm bg sections */
 .pattern-grid {
   background-image:
-    linear-gradient(rgba(28,18,9,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28,18,9,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(28, 18, 9, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 18, 9, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -271,19 +349,31 @@ body {
     -45deg,
     transparent,
     transparent 6px,
-    rgba(192,57,43,0.06) 6px,
-    rgba(192,57,43,0.06) 7px
+    rgba(192, 57, 43, 0.06) 6px,
+    rgba(192, 57, 43, 0.06) 7px
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
    MEDIA — scale images properly
 ───────────────────────────────────────────────────────────── */
-img { display: block; max-width: 100%; }
+img {
+  display: block;
+  max-width: 100%;
+}
 
 /* Scroll indicator animation */
 @keyframes scrollPulse {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50%       { transform: translateY(8px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
 }
-.scroll-cue { animation: scrollPulse 1.8s ease-in-out infinite; }
+.scroll-cue {
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
