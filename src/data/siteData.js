@@ -31,7 +31,7 @@ export const NAV_LINKS = [
 
 // ── Hero ──────────────────────────────────────────────────────
 export const HERO = {
-  backgroundImage: "./public/thc_all.jpg",
+  backgroundImage: "/thc_all.jpg",
   eyebrow: "Auckland · New Zealand · Est. 2003",
   headlinePart1: "More Than",
   headlinePart2: "a Club.",
